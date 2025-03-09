@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Bike Helmet Dashboard</title>
+    
+    <!-- Bootstrap CSS for responsive design -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card-body {
+            font-size: 18px;
+        }
+
+        .card-footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .widget {
+            margin-bottom: 20px;
+        }
+
+        .widget i {
+            font-size: 30px;
+        }
+
+        .widget .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .row {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">Smart Bike Helmet Dashboard</h1>
+    <h3 class="text-center text-muted">Real-time Sensor Data</h3>
+    
+    <div class="row">
+        <!-- Latitude Widget -->
+        <div class="col-md-4">
+            <div class="card widget">
+                <div class="card-header">
+                    <i class="fas fa-location-arrow"></i> Latitude
+                </div>
+                <div class="card-body">
+                    <span id="latitude" class="value">Loading...</span>
+                </div>
+                <div class="card-footer">
+                    Real-time GPS data
+                </div>
+            </div>
+        </div>
+
+        <!-- Longitude Widget -->
+        <div class="col-md-4">
+            <div class="card widget">
+                <div class="card-header">
+                    <i class="fas fa-location-arrow"></i> Longitude
+                </div>
+                <div class="card-body">
+                    <span id="longitude" class="value">Loading...</span>
+                </div>
+                <div class="card-footer">
+                    Real-time GPS data
+                </div>
+            </div>
+        </div>
+
+        <!-- Acceleration Widget -->
+        <div class="col-md-4">
+            <div class="card widget">
+                <div class="card-header">
+                    <i class="fas fa-tachometer-alt"></i> Acceleration
+                </div>
+                <div class="card-body">
+                    <span id="acceleration" class="value">Loading...</span> g
+                </div>
+                <div class="card-footer">
+                    Motion sensor data
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Heart Rate Widget -->
+        <div class="col-md-4">
+            <div class="card widget">
+                <div class="card-header">
+                    <i class="fas fa-heartbeat"></i> Heart Rate
+                </div>
+                <div class="card-body">
+                    <span id="pulseRate" class="value">Loading...</span> BPM
+                </div>
+                <div class="card-footer">
+                    Real-time heart rate data
+                </div>
+            </div>
+        </div>
+
+        <!-- Helmet Status Widget -->
+        <div class="col-md-4">
+            <div class="card widget">
+                <div class="card-header">
+                    <i class="fas fa-helmet-safety"></i> Helmet Status
+                </div>
+                <div class="card-body">
+                    <span id="helmetStatus" class="value">Loading...</span>
+                </div>
+                <div class="card-footer">
+                    Helmet detection status
+                </div>
+            </div>
+        </div>
+
+        <!-- Accident Detection Widget -->
+        <div class="col-md-4">
+            <div class="card widget">
+                <div class="card-header">
+                    <i class="fas fa-exclamation-triangle"></i> Accident Detection
+                </div>
+                <div class="card-body">
+                    <span id="accidentStatus" class="value">Loading...</span>
+                </div>
+                <div class="card-footer">
+                    Accident detection status
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap and JavaScript libraries -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // ThingSpeak Channel Info
+    const channelID = '2859280';  // Replace with your ThingSpeak Channel ID
+    const readAPIKey = '00TM854VTP2LAZ42';  // Replace with your ThingSpeak Read API Key
+
+    // Function to fetch data from ThingSpeak
+    async function fetchData() {
+        try {
+            // Fetch data from ThingSpeak
+            const response = await fetch(`https://api.thingspeak.com/channels/${channelID}/feeds.json?api_key=${readAPIKey}&results=1`);
+            const data = await response.json();
+            
+            // Extract data from the response
+            const latestFeed = data.feeds[0];
+            const latitude = latestFeed.field1; // Latitude (Field 1)
+            const longitude = latestFeed.field2; // Longitude (Field 2)
+            const acceleration = latestFeed.field3; // Acceleration (Field 3)
+            const pulseRate = latestFeed.field4; // Pulse Rate (Field 4)
+            const helmetStatus = latestFeed.field5; // Helmet Status (Field 5)
+            const accidentStatus = latestFeed.field6; // Accident Detection (Field 6)
+
+            // Update the HTML content with the fetched data
+            document.getElementById('latitude').textContent = latitude;
+            document.getElementById('longitude').textContent = longitude;
+            document.getElementById('acceleration').textContent = acceleration;
+            document.getElementById('pulseRate').textContent = pulseRate;
+            document.getElementById('helmetStatus').textContent = helmetStatus == 1 ? "Helmet Worn" : "Helmet Not Worn";
+            document.getElementById('accidentStatus').textContent = accidentStatus == 1 ? "Accident Detected" : (accidentStatus == 0 ? "Safe Driving" : "No Helmet Detected");
+
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+
+    // Fetch data every 10 seconds
+    setInterval(fetchData, 10000);
+    fetchData(); // Initial data fetch
+</script>
+
+</body>
+</html>
+
