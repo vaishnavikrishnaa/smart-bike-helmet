@@ -33,3 +33,10 @@ Accident Detection: I#dentifying crashes using motion anomalies and impact force
   All components of our Smart Bike Helmet are securely placed inside the helmet, except for the GPS module, which remains external to ensure accurate latitude and longitude detection. The pulse sensor continuously monitors vital signs for accident detection, while the touch sensor verifies helmet usage and enhances accident detection accuracy. Additionally, our system intelligently differentiates between actual accidents and false helmet falls, as the accident status is only triggered when multiple sensor conditions in the code’s logic are met, ensuring reliable and precise detection.  The Smart Bike Helmet is a step towards smarter and safer commuting, leveraging IoT technology to enhance rider security and provide critical accident response capabilities.
 
 Stay safe, ride smart!
+![image](https://github.com/user-attachments/assets/1fb27053-c79f-4a98-af60-dc99c7f37e48)
+![image](https://github.com/user-attachments/assets/34468430-6df1-42d2-9fff-f5f75d5083b3)
+![image](https://github.com/user-attachments/assets/f31da567-d46f-4e25-8e38-85619460def1)
+![image](https://github.com/user-attachments/assets/8ffe8952-15f1-4636-b42f-733857d4e32e)
+
+
+
